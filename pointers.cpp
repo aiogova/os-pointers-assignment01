@@ -1,6 +1,7 @@
 // compile: g++ -std=c++14 -o pointers pointers.cpp
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 typedef struct Student {
     int id;
@@ -72,9 +73,14 @@ int main(int argc, char **argv)
 
     // Call `CalculateStudentAverage(???, ???)`
     // double *avgPtr = &average;
-    calculateStudentAverage(student.grades, &average);
+    calculateStudentAverage(&student, &average);
 
     // Output `average`
+    std::cout << "Student: " << student.f_name << " " << student.l_name << " [" << student.id << "]" << std::endl;
+    
+    // only output one digit after decimal
+    std::cout << std::fixed << std::setprecision(1);
+    std::cout << "Average grade: " << average << std::endl;
 
     return 0;
 }
@@ -87,10 +93,34 @@ int main(int argc, char **argv)
 int promptInt(std::string message, int min, int max)
 {
     // Code to prompt user for an int
+    std::string strResult;
     int result;
-    std::cout << message;
-    std::cin >> result;
-    return result;
+
+    while (true) {
+        std::cout << message;
+        std::cin >> strResult;
+
+        //find_first_not_of returns the index of the first char NOT in the specified list of chars,
+        // else it returns std::string::npos. So if the only the specified chars are used, it returns npos
+
+        // if there IS a char in the string that's not included in the list. Essentially just check for valid chars
+        if (!(strResult.find_first_not_of("0123456789") == std::string::npos)) {
+            std::cout << "Sorry, I cannot understand your answer" << std::endl;
+            continue; // jump to the next loop iteration
+        }
+
+        result = std::stoi(strResult);
+
+        // check min and max
+        if (result < min || result > max) {
+            std::cout << "Sorry, I cannot understand your answer" << std::endl;
+            continue; // jump to the next loop iteration
+        }
+
+        // return once all conditions were met
+        return result;
+    }
+
 }
 
 /*
@@ -114,9 +144,16 @@ double promptDouble(std::string message, double min, double max)
 void calculateStudentAverage(void *object, double *avg)
 {
     // Code to calculate and store average grade
-    double result = 0.0;
-    // for (int i = 0; i < student.n_assignments; i++) {
+    double average;
+    double sum = 0;
 
-    // }
-    *avg = result;
+    Student *student = (Student*)object;
+
+    for (int i = 0; i < student->n_assignments; i++) {
+        sum += student->grades[i];
+    }
+
+    average = sum / student->n_assignments;
+
+    *avg = average;
 }
