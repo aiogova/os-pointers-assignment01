@@ -37,8 +37,6 @@ int main(int argc, char **argv)
     std::cout << "Please enter the student's first name: ";
     std::cin >> student.f_name;
 
-    //std::cout << "Your first name is: " << student.f_name << std::endl;
-
     // get student last name
     student.l_name = new char[128];
     std::cout << "Please enter the student's last name: ";
@@ -50,7 +48,7 @@ int main(int argc, char **argv)
     int maxNumAssignments = 134217728;
     student.n_assignments = promptInt(numAssignmentsPrompt, minNumAssignments, maxNumAssignments);
     
-    //std::cout << "Your number of assignments is: " << student.n_assignments << std::endl;
+    std::cout << std::endl;
 
     // get student's assignment grades
     student.grades = new double[student.n_assignments];
@@ -63,13 +61,6 @@ int main(int argc, char **argv)
 
         student.grades[i] = promptDouble(gradePrompt, minGrade, maxGrade);
     }
-
-    //  for (int i = 0; i < student.n_assignments; i++) {
-    //     std::cout << gradePrompt << i << ": ";
-    //     std::cin >> student.grades[i];
-    // }
-    
-    //student.grades = promptDouble(gradePrompt, minGrade, maxGrade);
     
 
     // Call `CalculateStudentAverage(???, ???)`
@@ -77,11 +68,12 @@ int main(int argc, char **argv)
     calculateStudentAverage(&student, &average);
 
     // Output `average`
+    std::cout << std::endl;
     std::cout << "Student: " << student.f_name << " " << student.l_name << " [" << student.id << "]" << std::endl;
     
     // only output one digit after decimal
     std::cout << std::fixed << std::setprecision(1);
-    std::cout << "Average grade: " << average << std::endl;
+    std::cout << "  Average grade: " << average << std::endl;
 
     return 0;
 }
