@@ -29,9 +29,6 @@ int main(int argc, char **argv)
     int maxStudentID = 999999999;
     student.id = promptInt(userIDPrompt, minStudentID, maxStudentID);
 
-    //std::cout << "Your student user ID is: " << student.id << std::endl;
-
-
     // get student first name
     student.f_name = new char[128];
     std::cout << "Please enter the student's first name: ";
@@ -61,7 +58,6 @@ int main(int argc, char **argv)
 
         student.grades[i] = promptDouble(gradePrompt, minGrade, maxGrade);
     }
-    
 
     // Call `CalculateStudentAverage(???, ???)`
     // double *avgPtr = &average;
@@ -169,8 +165,10 @@ void calculateStudentAverage(void *object, double *avg)
     double average;
     double sum = 0;
 
+    // cast the void pointer to be a pointer to a student object
     Student *student = (Student*)object;
 
+    // loop through and make the calculation by dereferencing the student pointer
     for (int i = 0; i < student->n_assignments; i++) {
         sum += student->grades[i];
     }
