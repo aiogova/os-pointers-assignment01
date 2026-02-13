@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <algorithm>
 
 typedef struct Student {
     int id;
@@ -132,9 +133,38 @@ double promptDouble(std::string message, double min, double max)
 {
     // Code to prompt user for a double
     double result;
-    std::cout << message;
-    std::cin >> result;
-    return result;
+    std::string strResult;
+
+    while (true) {
+        std::cout << message;
+        std::cin >> strResult;
+
+        //find_first_not_of returns the index of the first char NOT in the specified list of chars,
+        // else it returns std::string::npos. So if the only the specified chars are used, it returns npos
+
+        // if there IS a char in the string that's not included in the list. Essentially just check for valid chars
+        if (!(strResult.find_first_not_of("0123456789.") == std::string::npos)) {
+            std::cout << "Sorry, I cannot understand your answer" << std::endl;
+            continue; // jump to the next loop iteration
+        }
+
+        // if there is more than one decimal
+        if (std::count(strResult.begin(), strResult.end(), '.') > 1) {
+            std::cout << "Sorry, I cannot understand your answer" << std::endl;
+            continue; // jump to the next loop iteration
+        }
+
+        result = std::stod(strResult);
+
+        // check min and max
+        if (result < min || result > max) {
+            std::cout << "Sorry, I cannot understand your answer" << std::endl;
+            continue; // jump to the next loop iteration
+        }
+
+        // return once all conditions were met
+        return result;
+    }
 }
 
 /*
